@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Database/">
+    <File Path="schema.sql" />
+  </Folder>
   <Project Path="IpForensicsReport.Api/IpForensicsReport.Api.csproj" />
   <Project Path="IpForensicsReport.Client/IpForensicsReport.Client.esproj">
     <Build />
