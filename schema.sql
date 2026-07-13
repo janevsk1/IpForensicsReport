@@ -1,0 +1,19 @@
+CREATE DATABASE IF NOT EXISTS IpForensicsReport
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+USE IpForensicsReport;
+
+CREATE TABLE IF NOT EXISTS Users
+(
+    Id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    FirstName VARCHAR(100) NOT NULL,
+    LastName VARCHAR(100) NOT NULL,
+    Email VARCHAR(320) NOT NULL,
+    Password VARCHAR(512) NOT NULL,
+    CreatedOn DATETIME(6) NOT NULL,
+    UpdatedOn DATETIME(6) NULL,
+
+    CONSTRAINT PK_Users PRIMARY KEY (Id),
+    CONSTRAINT UQ_Users_Email UNIQUE (Email)
+) ENGINE = InnoDB;
