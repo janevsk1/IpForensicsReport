@@ -8,12 +8,14 @@ public sealed class MySqlConnectionFactory : IDbConnectionFactory
 
     public MySqlConnectionFactory(IConfiguration configuration)
     {
-        _connectionString = configuration.GetConnectionString("MySql")
+        _connectionString =
+            configuration.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException(
-                "The MySQL connection string 'MySql' is not configured.");
+                "Connection string 'DefaultConnection' is not configured.");
     }
 
-    public async Task<MySqlConnection> CreateOpenConnectionAsync(CancellationToken cancellationToken = default)
+    public async Task<MySqlConnection> CreateConnectionAsync(
+        CancellationToken cancellationToken = default)
     {
         var connection = new MySqlConnection(_connectionString);
 
