@@ -37,8 +37,8 @@ public sealed class UserRepository : IUserRepository
             );
             """;
 
-        await using var connection =
-            await _connectionFactory.CreateConnectionAsync(cancellationToken);
+        await using var connection = _connectionFactory.CreateConnection();
+        await connection.OpenAsync(cancellationToken);
 
         await using var command = new MySqlCommand(sql, connection);
 
@@ -90,8 +90,7 @@ public sealed class UserRepository : IUserRepository
         LIMIT 1;
         """;
 
-        await using var connection = await _connectionFactory.CreateConnectionAsync();
-
+        await using var connection = _connectionFactory.CreateConnection();
         await connection.OpenAsync(cancellationToken);
 
         await using var command =
@@ -132,7 +131,7 @@ public sealed class UserRepository : IUserRepository
             WHERE id = @userId;
             """;
 
-        await using var connection = await _connectionFactory.CreateConnectionAsync();
+        await using var connection = _connectionFactory.CreateConnection();
         await connection.OpenAsync(cancellationToken);
 
         await using var command = new MySqlCommand(sql, connection);

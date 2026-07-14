@@ -1,0 +1,140 @@
+:host {
+  display: block;
+}
+
+.register-page {
+  min-height: 100vh;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  background: #f4f6f9;
+}
+
+.register-card {
+  width: min(100%, 540px);
+  padding: 32px;
+  background: #ffffff;
+  border: 1px solid #dce1e8;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgb(0 0 0 / 8%);
+}
+
+.register-header {
+  margin-bottom: 28px;
+
+  h1 {
+    margin: 6px 0 8px;
+    color: #18212f;
+  }
+
+  p {
+    margin: 0;
+    color: #687386;
+  }
+}
+
+.application-name {
+  color: #2457d6 !important;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.name-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-field {
+  margin-bottom: 20px;
+
+  label {
+    display: block;
+    margin-bottom: 7px;
+    color: #263143;
+    font-weight: 600;
+  }
+
+  input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #bdc6d3;
+    border-radius: 7px;
+    box-sizing: border-box;
+    background: #ffffff;
+  }
+
+  input:focus {
+    border-color: #2457d6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(36 87 214 / 15%);
+  }
+}
+
+.validation-message {
+  margin: 6px 0 0;
+  color: #b42318;
+  font-size: 13px;
+}
+
+.alert {
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  border-radius: 7px;
+}
+
+.alert-error {
+  color: #8f1d14;
+  background: #ffebe9;
+  border: 1px solid #ffc5bf;
+}
+
+.submit-button {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 16px;
+  color: #ffffff;
+  font-weight: 700;
+  background: #2457d6;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.submit-button:hover:not(:disabled) {
+  background: #1e49b5;
+}
+
+.submit-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.login-link {
+  margin: 24px 0 0;
+  color: #687386;
+  text-align: center;
+
+  a {
+    color: #2457d6;
+    font-weight: 600;
+  }
+}
+
+@media (max-width: 600px) {
+  .register-page {
+    padding: 16px;
+  }
+
+  .register-card {
+    padding: 24px 20px;
+  }
+
+  .name-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

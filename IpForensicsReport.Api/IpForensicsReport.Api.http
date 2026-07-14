@@ -1,21 +1,21 @@
-@IpForensicsReport_Api_HostAddress = http://localhost:5258
+@host=https://localhost:7023
 
 ### Register
-POST {{IpForensicsReport_Api_HostAddress}}/api/account/register
+POST {{host}}/api/account/register
 Content-Type: application/json
 
 {
   "firstName": "Vladimir",
   "lastName": "Janevski",
-  "email": "vladimir@example.com",
+  "email": "vladimir2@example.com",
   "password": "SecurePassword123!"
 }
 
 ### Login
-POST {{IpForensicsReport_Api_HostAddress}}/api/account/login
+POST {{host}}/api/account/login
 Content-Type: application/json
 
 {
-  "email": "vladimir@example.com",
-  "password": "Password123!"
+  "email": "vladimir2@example.com",
+  "password": "SecurePassword123!"
 }

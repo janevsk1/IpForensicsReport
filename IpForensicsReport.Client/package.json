@@ -2,10 +2,8 @@
   "name": "ip-forensics-report.client",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve --host=127.0.0.1",
+    "start": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
   "private": true,

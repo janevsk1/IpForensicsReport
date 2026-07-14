@@ -64,6 +64,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "src/proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "IpForensicsReport.Client:build:production"
@@ -72,10 +75,7 @@
               "buildTarget": "IpForensicsReport.Client:build:development"
             }
           },
-          "defaultConfiguration": "development",
-          "options": {
-            "port": 60380
-          }
+          "defaultConfiguration": "development"
         },
         "test": {
           "builder": "@angular/build:unit-test",

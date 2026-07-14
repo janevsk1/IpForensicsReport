@@ -4,6 +4,5 @@ namespace IpForensicsReport.Api.Data;
 
 public interface IDbConnectionFactory
 {
-    Task<MySqlConnection> CreateConnectionAsync(
-        CancellationToken cancellationToken = default);
+    MySqlConnection CreateConnection();
 }

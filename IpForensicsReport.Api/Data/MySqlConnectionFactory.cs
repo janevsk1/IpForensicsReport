@@ -14,20 +14,9 @@ public sealed class MySqlConnectionFactory : IDbConnectionFactory
                 "Connection string 'DefaultConnection' is not configured.");
     }
 
-    public async Task<MySqlConnection> CreateConnectionAsync(
-        CancellationToken cancellationToken = default)
+    public MySqlConnection CreateConnection()
     {
-        var connection = new MySqlConnection(_connectionString);
-
-        try
-        {
-            await connection.OpenAsync(cancellationToken);
-            return connection;
-        }
-        catch
-        {
-            await connection.DisposeAsync();
-            throw;
-        }
+        // Do not open the connection here.
+        return new MySqlConnection(_connectionString);
     }
 }

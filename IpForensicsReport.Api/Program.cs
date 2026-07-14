@@ -102,8 +102,7 @@ app.MapGet(
         IDbConnectionFactory connectionFactory,
         CancellationToken cancellationToken) =>
     {
-        await using var connection =
-            await connectionFactory.CreateConnectionAsync(cancellationToken);
+        await using var connection = connectionFactory.CreateConnection();
 
         await using var command =
             new MySqlCommand("SELECT 1;", connection);
