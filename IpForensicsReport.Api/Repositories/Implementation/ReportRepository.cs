@@ -2,6 +2,7 @@
 using IpForensicsReport.Api.Models.Reports;
 using IpForensicsReport.Api.Repositories.Interfaces;
 using MySql.Data.MySqlClient;
+using System.Data.Common;
 
 namespace IpForensicsReport.Api.Repositories.Implementation
 {
@@ -76,6 +77,68 @@ namespace IpForensicsReport.Api.Repositories.Implementation
                 cancellationToken);
 
             return command.LastInsertedId;
+        }
+
+        public async Task<IReadOnlyList<EncryptedReportRecord>> GetByUserIdAsync(long userId, CancellationToken cancellationToken)
+        {
+            const string sql = """
+            SELECT
+                Id,
+                EncryptedPayload,
+                EncryptionNonce,
+                AuthenticationTag,
+                CreatedOn
+            FROM IpForensicsReports
+            WHERE UserId = @userId
+            ORDER BY CreatedOn DESC;
+            """;
+
+            await using var connection =
+                _connectionFactory.CreateConnection();
+
+            await connection.OpenAsync(cancellationToken);
+
+            await using var command =
+                new MySqlCommand(sql, connection);
+
+            command.Parameters.Add(
+                "@userId",
+                MySqlDbType.Int64
+            ).Value = userId;
+
+            await using var reader =
+                await command.ExecuteReaderAsync(cancellationToken);
+
+            var reports = new List<EncryptedReportRecord>();
+
+            while (await reader.ReadAsync(cancellationToken))
+            {
+                reports.Add(MapEncryptedReport(reader));
+            }
+
+            return reports;
+        }
+
+        private static EncryptedReportRecord MapEncryptedReport(
+            DbDataReader reader)
+        {
+            return new EncryptedReportRecord
+            {
+                Id = Convert.ToInt64(
+                    reader["Id"]),
+
+                EncryptedPayload =
+                    (byte[])reader["EncryptedPayload"],
+
+                EncryptionNonce =
+                    (byte[])reader["EncryptionNonce"],
+
+                AuthenticationTag =
+                    (byte[])reader["AuthenticationTag"],
+
+                CreatedOnUtc = Convert.ToDateTime(
+                    reader["CreatedOn"])
+            };
         }
     }
 }

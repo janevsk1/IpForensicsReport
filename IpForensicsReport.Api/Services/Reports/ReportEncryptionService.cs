@@ -96,5 +96,46 @@ namespace IpForensicsReport.Api.Services.Reports
 
             return Encoding.UTF8.GetString(plaintextBytes);
         }
+
+        //public string Decrypt(
+        //    byte[] encryptedPayload,
+        //    byte[] nonce,
+        //    byte[] authenticationTag)
+        //{
+        //    ArgumentNullException.ThrowIfNull(encryptedPayload);
+        //    ArgumentNullException.ThrowIfNull(nonce);
+        //    ArgumentNullException.ThrowIfNull(authenticationTag);
+
+        //    const int expectedNonceLength = 12;
+        //    const int expectedTagLength = 16;
+
+        //    if (nonce.Length != expectedNonceLength)
+        //    {
+        //        throw new CryptographicException(
+        //            "The encrypted report has an invalid nonce.");
+        //    }
+
+        //    if (authenticationTag.Length != expectedTagLength)
+        //    {
+        //        throw new CryptographicException(
+        //            "The encrypted report has an invalid authentication tag.");
+        //    }
+
+        //    var plaintext =
+        //        new byte[encryptedPayload.Length];
+
+        //    using var aesGcm =
+        //        new AesGcm(
+        //            _encryptionKey,
+        //            expectedTagLength);
+
+        //    aesGcm.Decrypt(
+        //        nonce,
+        //        encryptedPayload,
+        //        authenticationTag,
+        //        plaintext);
+
+        //    return Encoding.UTF8.GetString(plaintext);
+        //}
     }
 }

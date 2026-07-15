@@ -98,13 +98,97 @@ namespace IpForensicsReport.Api.Services.Reports
                     },
                     cancellationToken);
 
+            //return new IpForensicsReportResponse
+            //{
+            //    Id = reportId,
+            //    IpAddress = payload.IpAddress,
+            //    AbuseConfidenceScore = payload.AbuseConfidenceScore,
+            //    TotalReports = payload.TotalReports,
+            //    LastReportedDate = payload.LastReportedDate,
+            //    Continent = payload.Continent,
+            //    Country = payload.Country,
+            //    Region = payload.Region,
+            //    City = payload.City,
+            //    Mobile = payload.Mobile,
+            //    Proxy = payload.Proxy,
+            //    Hosting = payload.Hosting,
+            //    Tor = payload.Tor,
+            //    CreatedOn = payload.CreatedOn
+            //};
+
+            return MapToResponse(reportId, payload);
+        }
+
+        public async Task<IReadOnlyList<IpForensicsReportResponse>> GetByUserIdAsync(
+            long userId,
+            CancellationToken cancellationToken)
+        {
+            if (userId <= 0)
+            {
+                throw new ArgumentException(
+                    "A valid user ID is required.",
+                    nameof(userId));
+            }
+
+            var encryptedReports =
+                await _reportRepository.GetByUserIdAsync(
+                    userId,
+                    cancellationToken);
+
+            var reports =
+                new List<IpForensicsReportResponse>(
+                    encryptedReports.Count);
+
+            foreach (var encryptedReport in encryptedReports)
+            {
+                var encryptedData = new EncryptedReportData
+                {
+                    Payload =
+                        encryptedReport.EncryptedPayload,
+
+                    Nonce =
+                        encryptedReport.EncryptionNonce,
+
+                    AuthenticationTag =
+                        encryptedReport.AuthenticationTag
+                };
+
+                var payloadJson =
+                    _encryptionService.Decrypt(encryptedData);
+
+                var payload =
+                    JsonSerializer.Deserialize<ReportPayload>(
+                        payloadJson);
+
+                if (payload is null)
+                {
+                    throw new JsonException(
+                        $"Report {encryptedReport.Id} " +
+                        "could not be deserialized.");
+                }
+
+                reports.Add(
+                    MapToResponse(
+                        encryptedReport.Id,
+                        payload));
+            }
+
+            return reports;
+        }
+
+        private static IpForensicsReportResponse MapToResponse(
+            long reportId,
+            ReportPayload payload)
+        {
             return new IpForensicsReportResponse
             {
                 Id = reportId,
                 IpAddress = payload.IpAddress,
-                AbuseConfidenceScore = payload.AbuseConfidenceScore,
+                AbuseConfidenceScore =
+                    payload.AbuseConfidenceScore,
                 TotalReports = payload.TotalReports,
-                LastReportedDate = payload.LastReportedDate,
+                LastReportedDate =
+                    payload.LastReportedDate,
                 Continent = payload.Continent,
                 Country = payload.Country,
                 Region = payload.Region,

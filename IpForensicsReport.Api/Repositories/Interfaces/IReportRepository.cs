@@ -5,5 +5,7 @@ namespace IpForensicsReport.Api.Repositories.Interfaces
     public interface IReportRepository
     {
         Task<long> CreateAsync(CreateReportRecord report, CancellationToken cancellationToken);
+
+        Task<IReadOnlyList<EncryptedReportRecord>> GetByUserIdAsync(long userId, CancellationToken cancellationToken);
     }
 }

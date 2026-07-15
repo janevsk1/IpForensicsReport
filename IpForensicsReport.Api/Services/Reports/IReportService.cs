@@ -8,5 +8,9 @@ namespace IpForensicsReport.Api.Services.Reports
             long userId,
             string ipAddress,
             CancellationToken cancellationToken);
+
+        Task<IReadOnlyList<IpForensicsReportResponse>> GetByUserIdAsync(
+            long userId,
+            CancellationToken cancellationToken);
     }
 }
