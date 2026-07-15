@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace IpForensicsReport.Api.Services.Authentication
 {
-    public sealed class JwtTokenService : IJwtTokenService
+    public class JwtTokenService : IJwtTokenService
     {
         private readonly JwtOptions _options;
 

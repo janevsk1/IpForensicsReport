@@ -1,32 +1,43 @@
+using IpForensicsReport.Api.Configuration;
 using IpForensicsReport.Api.Data;
 using IpForensicsReport.Api.Models.User;
+using IpForensicsReport.Api.Repositories.Implementation;
 using IpForensicsReport.Api.Repositories.Implementations;
 using IpForensicsReport.Api.Repositories.Interfaces;
 using IpForensicsReport.Api.Services;
-using Microsoft.AspNetCore.Identity;
-using MySql.Data.MySqlClient;
-using System.Text;
-using IpForensicsReport.Api.Configuration;
 using IpForensicsReport.Api.Services.Authentication;
+using IpForensicsReport.Api.Services.Reports;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MySql.Data.MySqlClient;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+// Database
 builder.Services.AddSingleton<
     IDbConnectionFactory,
     MySqlConnectionFactory>();
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAccountService, AccountService>();
+// Account services
+builder.Services.AddScoped<
+    IUserRepository,
+    UserRepository>();
+
+builder.Services.AddScoped<
+    IAccountService,
+    AccountService>();
 
 builder.Services.AddScoped<
     IPasswordHasher<User>,
     PasswordHasher<User>>();
 
+// JWT configuration
 builder.Services.Configure<JwtOptions>(
     builder.Configuration.GetSection(
         JwtOptions.SectionName));
@@ -47,6 +58,18 @@ if (Encoding.UTF8.GetByteCount(jwtOptions.SigningKey) < 32)
 {
     throw new InvalidOperationException(
         "JWT signing key must be at least 32 bytes.");
+}
+
+if (string.IsNullOrWhiteSpace(jwtOptions.Issuer))
+{
+    throw new InvalidOperationException(
+        "JWT issuer is not configured.");
+}
+
+if (string.IsNullOrWhiteSpace(jwtOptions.Audience))
+{
+    throw new InvalidOperationException(
+        "JWT audience is not configured.");
 }
 
 builder.Services.AddScoped<
@@ -87,6 +110,77 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
+// External API configuration
+builder.Services.Configure<IpApiOptions>(
+    builder.Configuration.GetSection(
+        IpApiOptions.SectionName));
+
+builder.Services.Configure<AbuseIpDbOptions>(
+    builder.Configuration.GetSection(
+        AbuseIpDbOptions.SectionName));
+
+builder.Services.Configure<ReportEncryptionOptions>(
+    builder.Configuration.GetSection(
+        ReportEncryptionOptions.SectionName));
+
+// External API clients
+builder.Services.AddHttpClient<
+    IIpApiClient,
+    IpApiClient>(
+    (serviceProvider, client) =>
+    {
+        var options = serviceProvider
+            .GetRequiredService<IOptions<IpApiOptions>>()
+            .Value;
+
+        if (string.IsNullOrWhiteSpace(options.BaseUrl))
+        {
+            throw new InvalidOperationException(
+                "ip-api base URL is not configured.");
+        }
+
+        client.BaseAddress =
+            new Uri(options.BaseUrl);
+
+        client.Timeout =
+            TimeSpan.FromSeconds(10);
+    });
+
+builder.Services.AddHttpClient<
+    IAbuseIpDbClient,
+    AbuseIpDbClient>(
+    (serviceProvider, client) =>
+    {
+        var options = serviceProvider
+            .GetRequiredService<IOptions<AbuseIpDbOptions>>()
+            .Value;
+
+        if (string.IsNullOrWhiteSpace(options.BaseUrl))
+        {
+            throw new InvalidOperationException(
+                "AbuseIPDB base URL is not configured.");
+        }
+
+        client.BaseAddress =
+            new Uri(options.BaseUrl);
+
+        client.Timeout =
+            TimeSpan.FromSeconds(10);
+    });
+
+// Report services
+builder.Services.AddSingleton<
+    IReportEncryptionService,
+    ReportEncryptionService>();
+
+builder.Services.AddScoped<
+    IReportRepository,
+    ReportRepository>();
+
+builder.Services.AddScoped<
+    IReportService,
+    ReportService>();
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();
@@ -102,12 +196,18 @@ app.MapGet(
         IDbConnectionFactory connectionFactory,
         CancellationToken cancellationToken) =>
     {
-        await using var connection = connectionFactory.CreateConnection();
+        await using var connection =
+            connectionFactory.CreateConnection();
+
+        await connection.OpenAsync(cancellationToken);
 
         await using var command =
-            new MySqlCommand("SELECT 1;", connection);
+            new MySqlCommand(
+                "SELECT 1;",
+                connection);
 
-        await command.ExecuteScalarAsync(cancellationToken);
+        await command.ExecuteScalarAsync(
+            cancellationToken);
 
         return Results.Ok(new
         {

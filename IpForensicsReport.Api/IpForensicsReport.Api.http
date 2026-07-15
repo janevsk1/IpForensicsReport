@@ -1,4 +1,5 @@
 @host=https://localhost:7023
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJ2bGFkaW1pcjJAZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJWbGFkaW1pciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N1cm5hbWUiOiJKYW5ldnNraSIsImp0aSI6IjYwNjgzNTFlLTAwMzItNGY3OC1hYzJhLTI5NzFjODZhZWJjMiIsIm5iZiI6MTc4NDExMDYyNiwiZXhwIjoxNzg0MTE0MjI2LCJpc3MiOiJJcEZvcmVuc2ljc1JlcG9ydC5BcGkiLCJhdWQiOiJJcEZvcmVuc2ljc1JlcG9ydC5DbGllbnQifQ.hhcgypN5PLKEt1Z-XwBNUqkQCVTUFi4TdRicecP9bUg
 
 ### Register
 POST {{host}}/api/account/register
@@ -18,4 +19,13 @@ Content-Type: application/json
 {
   "email": "vladimir2@example.com",
   "password": "SecurePassword123!"
+}
+
+### Generate IP report
+POST {{host}}/api/reports/generate
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "ipAddress": "8.8.8.8"
 }

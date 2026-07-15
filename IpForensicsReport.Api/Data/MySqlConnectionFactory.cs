@@ -2,7 +2,7 @@
 
 namespace IpForensicsReport.Api.Data;
 
-public sealed class MySqlConnectionFactory : IDbConnectionFactory
+public class MySqlConnectionFactory : IDbConnectionFactory
 {
     private readonly string _connectionString;
 

@@ -1,6 +1,6 @@
 ﻿namespace IpForensicsReport.Api.Models.Account
 {
-    public sealed class LoginResponse
+    public class LoginResponse
     {
         public string AccessToken { get; set; } = string.Empty;
 

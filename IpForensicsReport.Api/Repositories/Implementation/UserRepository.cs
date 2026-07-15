@@ -5,7 +5,7 @@ using MySql.Data.MySqlClient;
 
 namespace IpForensicsReport.Api.Repositories.Implementations;
 
-public sealed class UserRepository : IUserRepository
+public class UserRepository : IUserRepository
 {
     private const int DuplicateEntryErrorNumber = 1062;
 
@@ -24,7 +24,7 @@ public sealed class UserRepository : IUserRepository
                 FirstName,
                 LastName,
                 Email,
-                Password,
+                PasswordHash,
                 CreatedOn
             )
             VALUES
@@ -32,7 +32,7 @@ public sealed class UserRepository : IUserRepository
                 @FirstName,
                 @LastName,
                 @Email,
-                @Password,
+                @PasswordHash,
                 @CreatedOn
             );
             """;
@@ -55,8 +55,8 @@ public sealed class UserRepository : IUserRepository
             .Value = user.Email;
 
         command.Parameters
-            .Add("@Password", MySqlDbType.VarChar, 512)
-            .Value = user.Password;
+            .Add("@PasswordHash", MySqlDbType.VarChar, 512)
+            .Value = user.PasswordHash;
 
         command.Parameters
             .Add("@CreatedOn", MySqlDbType.DateTime)
@@ -84,7 +84,7 @@ public sealed class UserRepository : IUserRepository
             FirstName,
             LastName,
             Email,
-            Password
+            PasswordHash
         FROM users
         WHERE email = @email
         LIMIT 1;
@@ -118,11 +118,12 @@ public sealed class UserRepository : IUserRepository
                 reader.GetOrdinal("LastName")),
             Email = reader.GetString(
                 reader.GetOrdinal("Email")),
-            Password = reader.GetString(
-                reader.GetOrdinal("Password"))
+            PasswordHash = reader.GetString(
+                reader.GetOrdinal("PasswordHash"))
         };
     }
 
+    //TODO: This will not be needed, remove later because password change is not in the requirements
     public async Task UpdatePasswordHashAsync(long userId, string passwordHash, CancellationToken cancellationToken = default)
     {
         const string sql = """

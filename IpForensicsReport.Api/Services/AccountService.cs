@@ -32,7 +32,7 @@ public class AccountService : IAccountService
             CreatedOn = DateTime.UtcNow
         };
 
-        user.Password = _passwordHasher.HashPassword(user, request.Password);
+        user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
 
         var userId = await _userRepository.TryCreateAsync(user, cancellationToken);
 
@@ -61,7 +61,7 @@ public class AccountService : IAccountService
             return null;
         }
 
-        var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.Password, request.Password);
+        var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
 
         if (verificationResult == PasswordVerificationResult.Failed)
         {

@@ -7,7 +7,7 @@ namespace IpForensicsReport.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public sealed class AccountController : Controller
+    public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
 
