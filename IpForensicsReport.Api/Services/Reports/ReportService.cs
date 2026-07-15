@@ -176,6 +176,86 @@ namespace IpForensicsReport.Api.Services.Reports
             return reports;
         }
 
+        //public async Task<IpForensicsReportResponse?> GetByIdAsync(
+        //    long reportId,
+        //    long userId,
+        //    CancellationToken cancellationToken)
+        //{
+        //    if (reportId <= 0)
+        //    {
+        //        throw new ArgumentException(
+        //            "A valid report ID is required.",
+        //            nameof(reportId));
+        //    }
+
+        //    if (userId <= 0)
+        //    {
+        //        throw new ArgumentException(
+        //            "A valid user ID is required.",
+        //            nameof(userId));
+        //    }
+
+        //    var encryptedReport =
+        //        await _reportRepository.GetByIdAsync(
+        //            reportId,
+        //            userId,
+        //            cancellationToken);
+
+        //    if (encryptedReport is null)
+        //    {
+        //        return null;
+        //    }
+
+        //    return DecryptAndMapReport(encryptedReport);
+        //}
+
+        public async Task<IpForensicsReportResponse?> GetByIdAsync(
+            long reportId,
+            long userId,
+            CancellationToken cancellationToken)
+        {
+            var encryptedReport =
+                await _reportRepository.GetByIdAsync(
+                    reportId,
+                    userId,
+                    cancellationToken);
+
+            if (encryptedReport is null)
+            {
+                return null;
+            }
+
+            return DecryptAndMapReport(encryptedReport);
+        }
+
+        private IpForensicsReportResponse DecryptAndMapReport(
+            EncryptedReportRecord encryptedReport)
+        {
+            var encryptedData = new EncryptedReportData
+            {
+                Payload = encryptedReport.EncryptedPayload,
+                Nonce = encryptedReport.EncryptionNonce,
+                AuthenticationTag =
+                    encryptedReport.AuthenticationTag
+            };
+
+            var payloadJson =
+                _encryptionService.Decrypt(encryptedData);
+
+            var payload =
+                JsonSerializer.Deserialize<ReportPayload>(
+                    payloadJson)
+                ?? throw new JsonException(
+                    $"Report {encryptedReport.Id} contains invalid data.");
+
+            payload.CreatedOn =
+                encryptedReport.CreatedOnUtc;
+
+            return MapToResponse(
+                encryptedReport.Id,
+                payload);
+        }
+
         private static IpForensicsReportResponse MapToResponse(
             long reportId,
             ReportPayload payload)

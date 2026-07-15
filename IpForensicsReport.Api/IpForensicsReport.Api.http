@@ -1,5 +1,6 @@
 @host=https://localhost:7023
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJ2bGFkaW1pcjJAZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJWbGFkaW1pciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N1cm5hbWUiOiJKYW5ldnNraSIsImp0aSI6IjQyNjVkYmJjLWY0YTAtNDBiYS1iNTY1LTQ0YzJkMzIwOTAyOSIsIm5iZiI6MTc4NDE0MjY0MywiZXhwIjoxNzg0MTQ2MjQzLCJpc3MiOiJJcEZvcmVuc2ljc1JlcG9ydC5BcGkiLCJhdWQiOiJJcEZvcmVuc2ljc1JlcG9ydC5DbGllbnQifQ.59wXcWoaa-ihP3HZ1AC1etR0eWVGm3LHEkIe7G5evos
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJ2bGFkaW1pcjJAZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJWbGFkaW1pciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N1cm5hbWUiOiJKYW5ldnNraSIsImp0aSI6IjUzOTMxYTAyLTgxNDQtNDNjYi1iMGExLTcwMjFiM2JiZjM2NyIsIm5iZiI6MTc4NDE0NzU4NSwiZXhwIjoxNzg0MTUxMTg1LCJpc3MiOiJJcEZvcmVuc2ljc1JlcG9ydC5BcGkiLCJhdWQiOiJJcEZvcmVuc2ljc1JlcG9ydC5DbGllbnQifQ.uZsAU-mMJDEBnhwE-SdDTepkqg-4beqQaJeTfneS9E8
+@reportId=2
 
 ### Register
 POST {{host}}/api/account/register
@@ -32,5 +33,10 @@ Content-Type: application/json
 
 ### Get user's saved reports
 GET {{host}}/api/reports
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+### Get report by ID
+GET {{host}}/api/reports/{{reportId}}
 Authorization: Bearer {{accessToken}}
 Accept: application/json

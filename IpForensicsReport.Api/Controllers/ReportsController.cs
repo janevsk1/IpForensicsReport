@@ -126,6 +126,32 @@ namespace IpForensicsReport.Api.Controllers
             }
         }
 
+        [HttpGet("{id:long}")]
+        public async Task<ActionResult<IpForensicsReportResponse>> GetById(
+            long id,
+            CancellationToken cancellationToken)
+        {
+            if (!TryGetAuthenticatedUserId(out var userId))
+            {
+                return Unauthorized();
+            }
+
+            var report = await _reportService.GetByIdAsync(
+                id,
+                userId,
+                cancellationToken);
+
+            if (report is null)
+            {
+                return NotFound(new
+                {
+                    Message = "Report was not found."
+                });
+            }
+
+            return Ok(report);
+        }
+
         private bool TryGetAuthenticatedUserId(out long userId)
         {
             var userIdClaim = User.FindFirstValue(JwtRegisteredClaimNames.Sub) 

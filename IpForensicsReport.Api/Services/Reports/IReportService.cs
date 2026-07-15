@@ -12,5 +12,10 @@ namespace IpForensicsReport.Api.Services.Reports
         Task<IReadOnlyList<IpForensicsReportResponse>> GetByUserIdAsync(
             long userId,
             CancellationToken cancellationToken);
+
+        Task<IpForensicsReportResponse?> GetByIdAsync(
+            long reportId,
+            long userId,
+            CancellationToken cancellationToken);
     }
 }

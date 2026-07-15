@@ -119,6 +119,53 @@ namespace IpForensicsReport.Api.Repositories.Implementation
             return reports;
         }
 
+        public async Task<EncryptedReportRecord?> GetByIdAsync(
+            long reportId,
+            long userId,
+            CancellationToken cancellationToken)
+        {
+            const string sql = """
+            SELECT
+                Id,
+                EncryptedPayload,
+                EncryptionNonce,
+                AuthenticationTag,
+                CreatedOn
+            FROM IpForensicsReports
+            WHERE Id = @reportId
+              AND UserId = @userId
+            LIMIT 1;
+            """;
+
+            await using var connection =
+                _connectionFactory.CreateConnection();
+
+            await connection.OpenAsync(cancellationToken);
+
+            await using var command =
+                new MySqlCommand(sql, connection);
+
+            command.Parameters.Add(
+                "@reportId",
+                MySqlDbType.Int64
+            ).Value = reportId;
+
+            command.Parameters.Add(
+                "@userId",
+                MySqlDbType.Int64
+            ).Value = userId;
+
+            await using var reader =
+                await command.ExecuteReaderAsync(cancellationToken);
+
+            if (!await reader.ReadAsync(cancellationToken))
+            {
+                return null;
+            }
+
+            return MapEncryptedReport(reader);
+        }
+
         private static EncryptedReportRecord MapEncryptedReport(
             DbDataReader reader)
         {
