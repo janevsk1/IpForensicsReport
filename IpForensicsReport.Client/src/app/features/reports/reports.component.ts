@@ -6,6 +6,7 @@ import {
   signal
 } from '@angular/core';
 import {
+  FormBuilder,
   FormControl,
   ReactiveFormsModule,
   Validators
@@ -43,11 +44,22 @@ export class ReportsComponent implements OnInit {
   readonly reportsErrorMessage = signal('');
   readonly generationErrorMessage = signal('');
 
-  readonly ipAddressControl = new FormControl('', {
-    nonNullable: true,
-    validators: [
-      Validators.required,
-      Validators.maxLength(45)
+  // readonly ipAddressControl = new FormControl('', {
+  //   nonNullable: true,
+  //   validators: [
+  //     Validators.required,
+  //     Validators.maxLength(45)
+  //   ]
+  // });
+
+  private readonly formBuilder = inject(FormBuilder);
+
+  readonly reportForm = this.formBuilder.nonNullable.group({
+    ipAddress: [
+      '',
+      [
+        Validators.required
+      ]
     ]
   });
 
@@ -67,7 +79,7 @@ export class ReportsComponent implements OnInit {
   }
 
   loadReports(): void {
-    debugger;
+    //debugger;
     this.isLoadingReports.set(true);
     this.reportsErrorMessage.set('');
 
@@ -89,35 +101,19 @@ export class ReportsComponent implements OnInit {
   }
 
   generateReport(): void {
-    this.ipAddressControl.markAsTouched();
-    this.generationErrorMessage.set('');
+    if (this.reportForm.invalid || this.isGeneratingReport()) {
+      this.reportForm.markAllAsTouched();
+      return;
+    }
 
     const ipAddress =
-      this.ipAddressControl.value.trim();
-
-    if (!ipAddress) {
-      this.ipAddressControl.setErrors({
-        required: true
-      });
-
-      return;
-    }
-
-    if (
-      this.ipAddressControl.invalid ||
-      this.isGeneratingReport()
-    ) {
-      return;
-    }
-
-    const request: ReportRequest = {
-      ipAddress
-    };
+      this.reportForm.controls.ipAddress.value.trim();
 
     this.isGeneratingReport.set(true);
+    this.generationErrorMessage.set('');
 
     this.reportService
-      .generateReport(request)
+      .generateReport({ ipAddress })
       .pipe(
         finalize(() => {
           this.isGeneratingReport.set(false);
@@ -125,15 +121,23 @@ export class ReportsComponent implements OnInit {
       )
       .subscribe({
         next: report => {
-          this.ipAddressControl.reset();
+          this.reports.update(reports => [
+            report,
+            ...reports.filter(
+              existingReport =>
+                existingReport.id !== report.id
+            )
+          ]);
 
-          this.router.navigate([
+          this.reportForm.reset();
+
+          void this.router.navigate([
             '/reports',
             report.id
           ]);
         },
-        error: (error: HttpErrorResponse) => {
-          this.handleGenerationError(error);
+        error: error => {
+          this.handleReportsError(error);
         }
       });
   }

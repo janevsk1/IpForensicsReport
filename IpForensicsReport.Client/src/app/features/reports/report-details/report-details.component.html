@@ -1,0 +1,223 @@
+<main class="report-details-page">
+  <header class="page-header">
+    <div>
+      <a
+        class="back-link"
+        routerLink="/reports">
+        ← Back to saved reports
+      </a>
+
+      <h1>Report details</h1>
+
+      <p>
+        Complete IP reputation, location and
+        network information.
+      </p>
+    </div>
+  </header>
+
+  @if (isLoading()) {
+    <section class="state-card">
+      <p>Loading report details...</p>
+    </section>
+  } @else if (errorMessage()) {
+    <section class="state-card error-card">
+      <h2>Unable to load report</h2>
+
+      <p>{{ errorMessage() }}</p>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="goBack()">
+        Back to reports
+      </button>
+    </section>
+  } @else if (report(); as selectedReport) {
+    <section class="report-overview">
+      <div>
+        <span class="section-label">
+          IP address
+        </span>
+
+        <h2>{{ selectedReport.ipAddress }}</h2>
+
+        <p>
+          Generated
+          {{ selectedReport.createdOn | date:'medium' }}
+        </p>
+      </div>
+
+      <div class="score-container">
+        <span class="score">
+          {{ selectedReport.abuseConfidenceScore }}%
+        </span>
+
+        <span class="risk-level">
+          {{
+            getRiskLevel(
+              selectedReport.abuseConfidenceScore
+            )
+          }}
+        </span>
+      </div>
+    </section>
+
+    <div class="details-grid">
+      <section class="details-card">
+        <div class="card-heading">
+          <h2>Reputation metrics</h2>
+
+          <p>
+            Abuse reports and confidence information.
+          </p>
+        </div>
+
+        <dl class="details-list">
+          <div class="detail-row">
+            <dt>Abuse confidence score</dt>
+
+            <dd>
+              {{
+                selectedReport.abuseConfidenceScore
+              }}%
+            </dd>
+          </div>
+
+          <div class="detail-row">
+            <dt>Total reports in the last 90 days</dt>
+
+            <dd>{{ selectedReport.totalReports }}</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt>Last reported date</dt>
+
+            <dd>
+              @if (selectedReport.lastReportedDate) {
+                {{
+                  selectedReport.lastReportedDate
+                    | date:'medium'
+                }}
+              } @else {
+                Not reported
+              }
+            </dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="details-card">
+        <div class="card-heading">
+          <h2>Geolocation</h2>
+
+          <p>
+            Approximate geographic information.
+          </p>
+        </div>
+
+        <dl class="details-list">
+          <div class="detail-row">
+            <dt>Continent</dt>
+
+            <dd>
+              {{
+                selectedReport.continent ||
+                'Not available'
+              }}
+            </dd>
+          </div>
+
+          <div class="detail-row">
+            <dt>Country</dt>
+
+            <dd>
+              {{
+                selectedReport.country ||
+                'Not available'
+              }}
+            </dd>
+          </div>
+
+          <div class="detail-row">
+            <dt>Region</dt>
+
+            <dd>
+              {{
+                selectedReport.region ||
+                'Not available'
+              }}
+            </dd>
+          </div>
+
+          <div class="detail-row">
+            <dt>City</dt>
+
+            <dd>
+              {{
+                selectedReport.city ||
+                'Not available'
+              }}
+            </dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="details-card network-card">
+        <div class="card-heading">
+          <h2>Network attributes</h2>
+
+          <p>
+            Connection and infrastructure indicators.
+          </p>
+        </div>
+
+        <div class="attributes-grid">
+          <div class="attribute">
+            <span>Mobile connection</span>
+
+            <strong
+              [class.positive-value]="selectedReport.mobile">
+              {{
+                getBooleanLabel(selectedReport.mobile)
+              }}
+            </strong>
+          </div>
+
+          <div class="attribute">
+            <span>Proxy connection</span>
+
+            <strong
+              [class.warning-value]="selectedReport.proxy">
+              {{
+                getBooleanLabel(selectedReport.proxy)
+              }}
+            </strong>
+          </div>
+
+          <div class="attribute">
+            <span>Hosted service</span>
+
+            <strong
+              [class.warning-value]="selectedReport.hosting">
+              {{
+                getBooleanLabel(selectedReport.hosting)
+              }}
+            </strong>
+          </div>
+
+          <div class="attribute">
+            <span>Tor network</span>
+
+            <strong
+              [class.warning-value]="selectedReport.tor">
+              {{
+                getBooleanLabel(selectedReport.tor)
+              }}
+            </strong>
+          </div>
+        </div>
+      </section>
+    </div>
+  }
+</main>

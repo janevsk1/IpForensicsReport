@@ -12,14 +12,14 @@ namespace IpForensicsReport.Api.Controllers
     [ApiController]
     [Authorize]
     [Route("api/[controller]")]
-    public class ReportsController : ControllerBase
+    public class ReportController : ControllerBase
     {
         private readonly IReportService _reportService;
-        private readonly ILogger<ReportsController> _logger;
+        private readonly ILogger<ReportController> _logger;
 
-        public ReportsController(
+        public ReportController(
             IReportService reportService,
-            ILogger<ReportsController> logger)
+            ILogger<ReportController> logger)
         {
             _reportService = reportService;
             _logger = logger;

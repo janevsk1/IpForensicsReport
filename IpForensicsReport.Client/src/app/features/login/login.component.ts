@@ -59,7 +59,7 @@ export class LoginComponent {
   isSubmitting = false;
 
   submit(): void {
-    debugger;
+    //debugger;
     //this.loginForm.controls.email.setValue(this.loginRequest.email);
     //this.loginForm.controls.password.setValue(this.loginRequest.password);
 

@@ -27,49 +27,23 @@
     </div>
 
     <form
-      class="generate-report-form"
+      [formGroup]="reportForm"
       (ngSubmit)="generateReport()">
 
-      <div class="input-container">
-        <label for="ipAddress">
-          IP address
-        </label>
+      <label for="ipAddress">
+        IP address
+      </label>
 
-        <input
-          id="ipAddress"
-          type="text"
-          inputmode="text"
-          autocomplete="off"
-          placeholder="For example: 8.8.8.8"
-          [formControl]="ipAddressControl">
-
-        @if (
-          ipAddressControl.touched &&
-          ipAddressControl.hasError('required')
-        ) {
-          <span class="field-error">
-            IP address is required.
-          </span>
-        }
-
-        @if (
-          ipAddressControl.touched &&
-          ipAddressControl.hasError('maxlength')
-        ) {
-          <span class="field-error">
-            The IP address is too long.
-          </span>
-        }
-      </div>
+      <input
+        id="ipAddress"
+        type="text"
+        formControlName="ipAddress"
+        placeholder="Enter an IP address"
+        autocomplete="off">
 
       <button
         type="submit"
-        class="generate-button"
-        [disabled]="
-          isGeneratingReport() ||
-          ipAddressControl.invalid
-        ">
-
+        [disabled]="reportForm.invalid || isGeneratingReport()">
         @if (isGeneratingReport()) {
           Generating...
         } @else {
@@ -123,31 +97,25 @@
       <div class="reports-grid">
         @for (report of reports(); track report.id) {
           <a
-            class="report-card"
-            [routerLink]="[
-              '/reports',
-              report.id
-            ]">
+            class="report-item"
+            [routerLink]="['/reports', report.id]">
 
-            <div class="report-card-header">
-              <strong>
-                {{ report.ipAddress }}
-              </strong>
+            <div class="report-item-header">
+              <strong>{{ report.ipAddress }}</strong>
 
-              <span class="risk-score">
+              <span class="report-score">
                 {{ report.abuseConfidenceScore }}%
               </span>
             </div>
 
-            <div class="report-location">
+            <p>
               {{ report.city || 'Unknown city' }},
               {{ report.country || 'Unknown country' }}
-            </div>
+            </p>
 
-            <div class="report-metadata">
+            <div class="report-item-footer">
               <span>
-                {{ report.totalReports }}
-                abuse reports
+                {{ report.totalReports }} abuse reports
               </span>
 
               <span>
