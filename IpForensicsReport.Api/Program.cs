@@ -7,6 +7,7 @@ using IpForensicsReport.Api.Repositories.Interfaces;
 using IpForensicsReport.Api.Services;
 using IpForensicsReport.Api.Services.Authentication;
 using IpForensicsReport.Api.Services.Reports;
+using IpForensicsReport.Api.ErrorHandling;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -18,6 +19,10 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+// Error handling
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 // Database
 builder.Services.AddSingleton<
@@ -182,6 +187,8 @@ builder.Services.AddScoped<
     ReportService>();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

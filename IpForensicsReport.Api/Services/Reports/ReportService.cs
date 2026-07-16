@@ -1,4 +1,5 @@
-﻿using IpForensicsReport.Api.Models.Reports;
+﻿using IpForensicsReport.Api.Exceptions;
+using IpForensicsReport.Api.Models.Reports;
 using IpForensicsReport.Api.Repositories.Interfaces;
 using System.Net;
 using System.Text.Json;
@@ -53,10 +54,9 @@ namespace IpForensicsReport.Api.Services.Reports
                     "success",
                     StringComparison.OrdinalIgnoreCase))
             {
-                throw new ArgumentException(
-                    locationData.Message ??
-                    "The IP address could not be processed.",
-                    nameof(ipAddress));
+                throw new InvalidIpAddressException(
+                    locationData.Message
+                    ?? "The IP address could not be processed.");
             }
 
             var abuseData =
@@ -158,39 +158,6 @@ namespace IpForensicsReport.Api.Services.Reports
             return reports;
         }
 
-        //public async Task<IpForensicsReportResponse?> GetByIdAsync(
-        //    long reportId,
-        //    long userId,
-        //    CancellationToken cancellationToken)
-        //{
-        //    if (reportId <= 0)
-        //    {
-        //        throw new ArgumentException(
-        //            "A valid report ID is required.",
-        //            nameof(reportId));
-        //    }
-
-        //    if (userId <= 0)
-        //    {
-        //        throw new ArgumentException(
-        //            "A valid user ID is required.",
-        //            nameof(userId));
-        //    }
-
-        //    var encryptedReport =
-        //        await _reportRepository.GetByIdAsync(
-        //            reportId,
-        //            userId,
-        //            cancellationToken);
-
-        //    if (encryptedReport is null)
-        //    {
-        //        return null;
-        //    }
-
-        //    return DecryptAndMapReport(encryptedReport);
-        //}
-
         public async Task<IpForensicsReportResponse?> GetByIdAsync(
             long reportId,
             long userId,
@@ -268,9 +235,8 @@ namespace IpForensicsReport.Api.Services.Reports
         {
             if (string.IsNullOrWhiteSpace(ipAddress))
             {
-                throw new ArgumentException(
-                    "IP address is required.",
-                    nameof(ipAddress));
+                throw new InvalidIpAddressException(
+                    "IP address is required.");
             }
 
             var trimmedIpAddress = ipAddress.Trim();
@@ -279,9 +245,8 @@ namespace IpForensicsReport.Api.Services.Reports
                     trimmedIpAddress,
                     out var parsedIpAddress))
             {
-                throw new ArgumentException(
-                    "The provided value is not a valid IPv4 or IPv6 address.",
-                    nameof(ipAddress));
+                throw new InvalidIpAddressException(
+                    "The provided value is not a valid IPv4 or IPv6 address.");
             }
 
             return parsedIpAddress.ToString();

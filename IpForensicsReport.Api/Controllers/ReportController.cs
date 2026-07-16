@@ -4,74 +4,35 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text.Json;
 
 namespace IpForensicsReport.Api.Controllers
 {
     [ApiController]
     [Authorize]
     [Route("api/[controller]")]
-    public class ReportController : ControllerBase
+    public class ReportController(
+        IReportService reportService) : ControllerBase
     {
-        private readonly IReportService _reportService;
-        private readonly ILogger<ReportController> _logger;
-
-        public ReportController(
-            IReportService reportService,
-            ILogger<ReportController> logger)
-        {
-            _reportService = reportService;
-            _logger = logger;
-        }
+        private readonly IReportService _reportService = reportService;
 
         [HttpPost("generate")]
         public async Task<ActionResult<IpForensicsReportResponse>> GenerateReport(
             [FromBody] GenerateReportRequest request,
             CancellationToken cancellationToken)
         {
-            //var userIdClaim = User.FindFirstValue(JwtRegisteredClaimNames.Sub) 
-            //    ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             if (!TryGetAuthenticatedUserId(out var userId))
             {
-                return Unauthorized(new
-                {
-                    Message = "The access token does not contain a valid user ID."
-                });
+                return Unauthorized(GetInvalidAccessTokenProblemDetails());
             }
 
-            try
-            {
-                var report = await _reportService.GenerateAsync(
-                        userId,
-                        request.IpAddress,
-                        cancellationToken);
+            var report = await _reportService.GenerateAsync(
+                userId,
+                request.IpAddress,
+                cancellationToken);
 
-                return StatusCode(
-                    StatusCodes.Status201Created,
-                    report);
-            }
-            catch (ArgumentException exception)
-            {
-                return BadRequest(new
-                {
-                    Message = exception.Message
-                });
-            }
-            catch (HttpRequestException exception)
-            {
-                _logger.LogWarning(
-                    exception,
-                    "External API request failed while generating report.");
-
-                return StatusCode(
-                    StatusCodes.Status502BadGateway,
-                    new
-                    {
-                        Message = "An external IP information service is unavailable."
-                    });
-            }
+            return StatusCode(
+                StatusCodes.Status201Created,
+                report);
         }
 
         [HttpGet("reports")]
@@ -79,51 +40,14 @@ namespace IpForensicsReport.Api.Controllers
         {
             if (!TryGetAuthenticatedUserId(out var userId))
             {
-                return Unauthorized(new
-                {
-                    Message =
-                        "The access token does not contain " +
-                        "a valid user ID."
-                });
+                return Unauthorized(GetInvalidAccessTokenProblemDetails());
             }
 
-            try
-            {
-                var reports =
-                    await _reportService.GetByUserIdAsync(
-                        userId,
-                        cancellationToken);
+            var reports = await _reportService.GetByUserIdAsync(
+                userId,
+                cancellationToken);
 
-                return Ok(reports);
-            }
-            catch (CryptographicException exception)
-            {
-                _logger.LogError(
-                    exception,
-                    "A saved report could not be decrypted " +
-                    "for user {UserId}.",
-                    userId);
-
-                return Problem(
-                    statusCode:
-                        StatusCodes.Status500InternalServerError,
-                    title:
-                        "A saved report could not be decrypted.");
-            }
-            catch (JsonException exception)
-            {
-                _logger.LogError(
-                    exception,
-                    "A decrypted report contained invalid data " +
-                    "for user {UserId}.",
-                    userId);
-
-                return Problem(
-                    statusCode:
-                        StatusCodes.Status500InternalServerError,
-                    title:
-                        "A saved report contained invalid data.");
-            }
+            return Ok(reports);
         }
 
         [HttpGet("{id:long}")]
@@ -133,7 +57,7 @@ namespace IpForensicsReport.Api.Controllers
         {
             if (!TryGetAuthenticatedUserId(out var userId))
             {
-                return Unauthorized();
+                return Unauthorized(GetInvalidAccessTokenProblemDetails());
             }
 
             var report = await _reportService.GetByIdAsync(
@@ -158,6 +82,16 @@ namespace IpForensicsReport.Api.Controllers
                 ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             return long.TryParse(userIdClaim, out userId);
+        }
+
+        private static ProblemDetails GetInvalidAccessTokenProblemDetails()
+        {
+            return new ProblemDetails
+            {
+                Status = StatusCodes.Status401Unauthorized,
+                Title = "Invalid access token",
+                Detail = "The access token does not contain a valid user ID."
+            };
         }
     }
 }
