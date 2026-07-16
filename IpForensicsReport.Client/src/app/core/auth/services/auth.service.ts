@@ -29,7 +29,6 @@ export class AuthService {
       )
       .pipe(
         tap(response => {
-          //debugger;
           this.authSessionService.setSession({
             accessToken: response.accessToken,
             expiresAtUtc: response.expiresAtUtc,

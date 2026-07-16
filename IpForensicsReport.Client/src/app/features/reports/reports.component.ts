@@ -44,14 +44,6 @@ export class ReportsComponent implements OnInit {
   readonly reportsErrorMessage = signal('');
   readonly generationErrorMessage = signal('');
 
-  // readonly ipAddressControl = new FormControl('', {
-  //   nonNullable: true,
-  //   validators: [
-  //     Validators.required,
-  //     Validators.maxLength(45)
-  //   ]
-  // });
-
   private readonly formBuilder = inject(FormBuilder);
 
   readonly reportForm = this.formBuilder.nonNullable.group({
@@ -79,7 +71,6 @@ export class ReportsComponent implements OnInit {
   }
 
   loadReports(): void {
-    //debugger;
     this.isLoadingReports.set(true);
     this.reportsErrorMessage.set('');
 
@@ -137,7 +128,7 @@ export class ReportsComponent implements OnInit {
           ]);
         },
         error: error => {
-          this.handleReportsError(error);
+          this.handleGenerationError(error);
         }
       });
   }

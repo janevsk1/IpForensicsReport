@@ -32,12 +32,6 @@ export class LoginComponent {
   errorMessage = '';
   successMessage = '';
 
-  // Temporary test data.
-  readonly loginRequest: LoginRequest = {
-    email: 'test@example.com',
-    password: 'Test123!'
-  };
-
   readonly loginForm = this.formBuilder.nonNullable.group({
     email: [
       '',
@@ -59,10 +53,6 @@ export class LoginComponent {
   isSubmitting = false;
 
   submit(): void {
-    //debugger;
-    //this.loginForm.controls.email.setValue(this.loginRequest.email);
-    //this.loginForm.controls.password.setValue(this.loginRequest.password);
-
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
