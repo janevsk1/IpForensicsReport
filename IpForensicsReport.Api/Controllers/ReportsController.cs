@@ -11,7 +11,7 @@ namespace IpForensicsReport.Api.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("api/reports")]
+    [Route("api/[controller]")]
     public class ReportsController : ControllerBase
     {
         private readonly IReportService _reportService;
@@ -74,7 +74,7 @@ namespace IpForensicsReport.Api.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("reports")]
         public async Task<ActionResult<IReadOnlyList<IpForensicsReportResponse>>> GetReports(CancellationToken cancellationToken)
         {
             if (!TryGetAuthenticatedUserId(out var userId))

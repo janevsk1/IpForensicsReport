@@ -1,5 +1,12 @@
 @host=https://localhost:7023
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJ2bGFkaW1pcjJAZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJWbGFkaW1pciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N1cm5hbWUiOiJKYW5ldnNraSIsImp0aSI6IjUzOTMxYTAyLTgxNDQtNDNjYi1iMGExLTcwMjFiM2JiZjM2NyIsIm5iZiI6MTc4NDE0NzU4NSwiZXhwIjoxNzg0MTUxMTg1LCJpc3MiOiJJcEZvcmVuc2ljc1JlcG9ydC5BcGkiLCJhdWQiOiJJcEZvcmVuc2ljc1JlcG9ydC5DbGllbnQifQ.uZsAU-mMJDEBnhwE-SdDTepkqg-4beqQaJeTfneS9E8
+//TODO: Replace all values with your own values
+@firstName=Vladimir
+@lastName=Janevski
+@email=vladimir2@example.com
+@password=SecurePassword123!
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJ2bGFkaW1pcjJAZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJWbGFkaW1pciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N1cm5hbWUiOiJKYW5ldnNraSIsImp0aSI6IjFkZWE5NWIzLTk0YjktNDM1Yi1hZTBhLTQzZDBkNWIyYWZlMiIsIm5iZiI6MTc4NDE4NDEwNCwiZXhwIjoxNzg0MTg3NzA0LCJpc3MiOiJJcEZvcmVuc2ljc1JlcG9ydC5BcGkiLCJhdWQiOiJJcEZvcmVuc2ljc1JlcG9ydC5DbGllbnQifQ.Z6F6xRJ-e_tO583JCUJulvO5fDwMcgQj3C3tayDnNQ0
+//@ipAddress=8.8.8.8
+@ipAddress=31.11.98.134
 @reportId=2
 
 ### Register
@@ -7,10 +14,10 @@ POST {{host}}/api/account/register
 Content-Type: application/json
 
 {
-  "firstName": "Vladimir",
-  "lastName": "Janevski",
-  "email": "vladimir2@example.com",
-  "password": "SecurePassword123!"
+  "firstName": "{{firstName}}",
+  "lastName": "{{lastName}}",
+  "email": "{{email}}",
+  "password": "{{password}}"
 }
 
 ### Login
@@ -18,8 +25,8 @@ POST {{host}}/api/account/login
 Content-Type: application/json
 
 {
-  "email": "vladimir2@example.com",
-  "password": "SecurePassword123!"
+  "email": "{{email}}",
+  "password": "{{password}}"
 }
 
 ### Generate IP report
@@ -28,7 +35,7 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "ipAddress": "8.8.8.8"
+  "ipAddress": "{{ipAddress}}"
 }
 
 ### Get user's saved reports

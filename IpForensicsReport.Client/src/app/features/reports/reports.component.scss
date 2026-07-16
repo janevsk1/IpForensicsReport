@@ -1,0 +1,107 @@
+.generate-report-card {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border: 1px solid #e4e7ec;
+  border-radius: 0.75rem;
+}
+
+.section-heading {
+  margin-bottom: 1.25rem;
+}
+
+.section-heading h2 {
+  margin: 0 0 0.4rem;
+}
+
+.section-heading p {
+  margin: 0;
+  color: #667085;
+}
+
+.generate-report-form {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.input-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.input-container label {
+  font-weight: 600;
+}
+
+.input-container input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem;
+  border: 1px solid #d0d5dd;
+  border-radius: 0.5rem;
+  font: inherit;
+}
+
+.input-container input:focus {
+  border-color: #667085;
+  outline: none;
+}
+
+.input-container input.ng-invalid.ng-touched {
+  border-color: #d92d20;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logout-button {
+  margin-bottom: 1.65rem;
+  margin-right: 1.65rem;
+  padding: 0.8rem 1.25rem;
+  border: 0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.generate-button {
+  margin-top: 1.65rem;
+  padding: 0.8rem 1.25rem;
+  border: 0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.generate-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.field-error {
+  color: #d92d20;
+  font-size: 0.875rem;
+}
+
+.error-message {
+  margin-top: 1rem;
+  padding: 0.9rem;
+  border-radius: 0.5rem;
+  background: #fef3f2;
+  color: #b42318;
+}
+
+@media (max-width: 600px) {
+  .generate-report-form {
+    flex-direction: column;
+  }
+
+  .generate-button {
+    width: 100%;
+    margin-top: 0;
+  }
+}

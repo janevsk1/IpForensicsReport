@@ -98,24 +98,6 @@ namespace IpForensicsReport.Api.Services.Reports
                     },
                     cancellationToken);
 
-            //return new IpForensicsReportResponse
-            //{
-            //    Id = reportId,
-            //    IpAddress = payload.IpAddress,
-            //    AbuseConfidenceScore = payload.AbuseConfidenceScore,
-            //    TotalReports = payload.TotalReports,
-            //    LastReportedDate = payload.LastReportedDate,
-            //    Continent = payload.Continent,
-            //    Country = payload.Country,
-            //    Region = payload.Region,
-            //    City = payload.City,
-            //    Mobile = payload.Mobile,
-            //    Proxy = payload.Proxy,
-            //    Hosting = payload.Hosting,
-            //    Tor = payload.Tor,
-            //    CreatedOn = payload.CreatedOn
-            //};
-
             return MapToResponse(reportId, payload);
         }
 
