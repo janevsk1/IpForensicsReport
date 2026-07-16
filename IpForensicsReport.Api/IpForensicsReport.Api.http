@@ -1,12 +1,10 @@
 @host=https://localhost:7023
-//TODO: Replace all values with your own values
-@firstName=Vladimir
-@lastName=Janevski
-@email=vladimir2@example.com
-@password=SecurePassword123!
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJ2bGFkaW1pcjJAZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJWbGFkaW1pciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N1cm5hbWUiOiJKYW5ldnNraSIsImp0aSI6IjFkZWE5NWIzLTk0YjktNDM1Yi1hZTBhLTQzZDBkNWIyYWZlMiIsIm5iZiI6MTc4NDE4NDEwNCwiZXhwIjoxNzg0MTg3NzA0LCJpc3MiOiJJcEZvcmVuc2ljc1JlcG9ydC5BcGkiLCJhdWQiOiJJcEZvcmVuc2ljc1JlcG9ydC5DbGllbnQifQ.Z6F6xRJ-e_tO583JCUJulvO5fDwMcgQj3C3tayDnNQ0
-//@ipAddress=8.8.8.8
-@ipAddress=31.11.98.134
+@firstName=your_first_name
+@lastName=your_last_name
+@email=your_email@example.com
+@password=your_secure_password
+@accessToken=your_access_token
+@ipAddress=8.8.8.8
 @reportId=2
 
 ### Register
