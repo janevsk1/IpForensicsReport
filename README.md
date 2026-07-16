@@ -104,12 +104,6 @@ The API runs at:
 https://localhost:7023
 ```
 
-To verify the database connection, open:
-
-```text
-https://localhost:7023/health/database
-```
-
 For a local HTTPS certificate issue, run:
 
 ```bash
