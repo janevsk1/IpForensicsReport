@@ -15,11 +15,11 @@ export class AuthSessionService {
 
   readonly currentUser = computed(() => this.sessionState()?.user ?? null);
 
-  readonly isAuthenticated = computed(() => {
+  isAuthenticated(): boolean {
     const session = this.sessionState();
 
     return session !== null && !this.isExpired(session);
-  });
+  }
 
   get accessToken(): string | null {
     const session = this.sessionState();

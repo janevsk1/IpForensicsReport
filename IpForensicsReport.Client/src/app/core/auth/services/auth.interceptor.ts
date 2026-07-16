@@ -11,6 +11,7 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
   const authSession = inject(AuthSessionService);
   const router = inject(Router);
 
+  const hadSession = authSession.session() !== null;
   const accessToken = authSession.accessToken;
   const isApiRequest = request.url.startsWith('/api/');
 
@@ -25,18 +26,19 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
 
   return next(authenticatedRequest).pipe(
     catchError((error: HttpErrorResponse) => {
-      /*
-       * Only clear an existing authenticated session.
-       * A failed login also returns 401, but no token exists then.
-       */
-      if (error.status === 401 && accessToken) {
+      if (
+        isApiRequest &&
+        error.status === 401 &&
+        hadSession
+      ) {
         const returnUrl = router.url;
 
         authSession.clear();
 
         void router.navigate(['/login'], {
           queryParams: {
-            returnUrl
+            returnUrl,
+            reason: 'session-expired'
           }
         });
       }
