@@ -122,29 +122,4 @@ public class UserRepository : IUserRepository
                 reader.GetOrdinal("PasswordHash"))
         };
     }
-
-    //TODO: This will not be needed, remove later because password change is not in the requirements
-    public async Task UpdatePasswordHashAsync(long userId, string passwordHash, CancellationToken cancellationToken = default)
-    {
-        const string sql = """
-            UPDATE users
-            SET password_hash = @passwordHash
-            WHERE id = @userId;
-            """;
-
-        await using var connection = _connectionFactory.CreateConnection();
-        await connection.OpenAsync(cancellationToken);
-
-        await using var command = new MySqlCommand(sql, connection);
-
-        command.Parameters
-            .Add("@passwordHash", MySqlDbType.VarChar, 500)
-            .Value = passwordHash;
-
-        command.Parameters
-            .Add("@userId", MySqlDbType.Int64)
-            .Value = userId;
-
-        await command.ExecuteNonQueryAsync(cancellationToken);
-    }
 }

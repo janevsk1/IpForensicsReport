@@ -7,7 +7,5 @@ namespace IpForensicsReport.Api.Repositories.Interfaces
         Task<long?> TryCreateAsync(User user, CancellationToken cancellationToken = default);
 
         Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
-
-        Task UpdatePasswordHashAsync(long userId, string passwordHash, CancellationToken cancellationToken = default);
     }
 }

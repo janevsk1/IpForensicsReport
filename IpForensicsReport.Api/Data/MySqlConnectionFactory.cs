@@ -16,7 +16,6 @@ public class MySqlConnectionFactory : IDbConnectionFactory
 
     public MySqlConnection CreateConnection()
     {
-        // Do not open the connection here.
         return new MySqlConnection(_connectionString);
     }
 }

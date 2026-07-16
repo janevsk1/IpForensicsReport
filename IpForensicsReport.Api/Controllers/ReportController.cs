@@ -67,9 +67,11 @@ namespace IpForensicsReport.Api.Controllers
 
             if (report is null)
             {
-                return NotFound(new
+                return NotFound(new ProblemDetails
                 {
-                    Message = "Report was not found."
+                    Status = StatusCodes.Status404NotFound,
+                    Title = "Report not found",
+                    Detail = "The requested report was not found."
                 });
             }
 

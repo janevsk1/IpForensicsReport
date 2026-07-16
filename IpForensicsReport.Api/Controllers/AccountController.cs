@@ -52,13 +52,5 @@ namespace IpForensicsReport.Api.Controllers
 
             return Ok(response);
         }
-
-        // TODO: Only for testing purposes, remove this endpoint later
-        [AllowAnonymous]
-        [HttpGet("health")]
-        public async Task<ActionResult> GetConnection(CancellationToken cancellationToken)
-        {
-            return Ok("response");
-        }
     }
 }

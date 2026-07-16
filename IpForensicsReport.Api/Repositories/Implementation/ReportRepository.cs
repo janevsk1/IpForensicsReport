@@ -39,7 +39,6 @@ namespace IpForensicsReport.Api.Repositories.Implementation
             );
             """;
 
-            //TODO: Use shared/common method to create connection and command objects to avoid code duplication
             await using var connection =
                 _connectionFactory.CreateConnection();
 

@@ -65,43 +65,6 @@ namespace IpForensicsReport.Api.Services.Reports
             }
 
             return result.Data;
-
-            //try
-            //{
-            //    using var response = await _httpClient.SendAsync(
-            //        request,
-            //        cancellationToken);
-
-            //    response.EnsureSuccessStatusCode();
-
-            //    var result = await response.Content
-            //        .ReadFromJsonAsync<AbuseIpDbResponse>(
-            //            cancellationToken: cancellationToken);
-
-            //    if (result?.Data is null)
-            //    {
-            //        throw new HttpRequestException(
-            //            "AbuseIPDB returned an empty response.");
-            //    }
-
-            //    return result.Data;
-            //}
-            //catch (OperationCanceledException ex)
-            //    when (!cancellationToken.IsCancellationRequested)
-            //{
-            //    throw new TimeoutException(
-            //        $"AbuseIPDB did not respond within " +
-            //        $"{_httpClient.Timeout.TotalSeconds} seconds.",
-            //        ex);
-            //}
-            //catch (OperationCanceledException ex)
-            //    when (cancellationToken.IsCancellationRequested)
-            //{
-            //    throw new OperationCanceledException(
-            //        "The incoming report request was cancelled.",
-            //        ex,
-            //        cancellationToken);
-            //}
         }
     }
 }
