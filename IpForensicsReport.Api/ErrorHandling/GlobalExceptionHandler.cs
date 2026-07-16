@@ -47,29 +47,30 @@ namespace IpForensicsReport.Api.ErrorHandling
                 CryptographicException => new ProblemDetails
                 {
                     Status = StatusCodes.Status500InternalServerError,
-                    Title = "Report decryption failed",
-                    Detail = "A saved report could not be read."
+                    Title = "Report security processing failed",
+                    Detail = "The report data could not be processed securely."
                 },
 
                 JsonException => new ProblemDetails
                 {
                     Status = StatusCodes.Status500InternalServerError,
-                    Title = "Invalid saved report data",
-                    Detail = "A saved report contained invalid data."
+                    Title = "Invalid report data",
+                    Detail = "Report data could not be processed."
                 },
 
                 _ => new ProblemDetails
                 {
                     Status = StatusCodes.Status500InternalServerError,
                     Title = "Unexpected server error",
-                    Detail =
-                        "An unexpected error occurred while processing the request."
+                    Detail = "An unexpected error occurred while processing the request."
                 }
             };
 
             problemDetails.Instance = httpContext.Request.Path;
 
-            LogException(exception, problemDetails.Status);
+            problemDetails.Extensions["traceId"] = httpContext.TraceIdentifier;
+
+            LogException(httpContext, exception);
 
             httpContext.Response.StatusCode =
                 problemDetails.Status
@@ -82,7 +83,7 @@ namespace IpForensicsReport.Api.ErrorHandling
             return true;
         }
 
-        private void LogException(Exception exception, int? statusCode)
+        private void LogException(HttpContext httpContext, Exception exception)
         {
             switch (exception)
             {
@@ -93,18 +94,27 @@ namespace IpForensicsReport.Api.ErrorHandling
                 case OperationCanceledException:
                     logger.LogWarning(
                         exception,
-                        "External service request failed.");
+                        "External service request failed for {Method} {Path}. TraceId: {TraceId}",
+                        httpContext.Request.Method,
+                        httpContext.Request.Path,
+                        httpContext.TraceIdentifier);
                     break;
                 case CryptographicException:
                 case JsonException:
                     logger.LogError(
                         exception,
-                        "A saved report could not be processed.");
+                        "Report data processing failed for {Method} {Path}. TraceId: {TraceId}",
+                        httpContext.Request.Method,
+                        httpContext.Request.Path,
+                        httpContext.TraceIdentifier);
                     break;
                 default:
                     logger.LogError(
                         exception,
-                        "Unhandled exception occurred.");
+                        "Unhandled exception for {Method} {Path}. TraceId: {TraceId}",
+                        httpContext.Request.Method,
+                        httpContext.Request.Path,
+                        httpContext.TraceIdentifier);
                     break;
             }
         }
