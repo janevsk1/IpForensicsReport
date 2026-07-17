@@ -251,5 +251,21 @@ namespace IpForensicsReport.Api.Services.Reports
 
             return parsedIpAddress.ToString();
         }
+
+        public async Task<int> DeleteAllByUserIdAsync(
+            long userId,
+            CancellationToken cancellationToken)
+        {
+            if (userId <= 0)
+            {
+                throw new ArgumentException(
+                    "A valid user ID is required.",
+                    nameof(userId));
+            }
+
+            return await _reportRepository.DeleteByUserIdAsync(
+                userId,
+                cancellationToken);
+        }
     }
 }

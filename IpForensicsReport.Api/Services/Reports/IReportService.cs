@@ -17,5 +17,9 @@ namespace IpForensicsReport.Api.Services.Reports
             long reportId,
             long userId,
             CancellationToken cancellationToken);
+
+        Task<int> DeleteAllByUserIdAsync(
+            long userId,
+            CancellationToken cancellationToken);
     }
 }

@@ -36,6 +36,12 @@ export class ReportService {
     );
   }
 
+  deleteAllReports(): Observable<void> {
+    return this.http.delete<void>(
+      this.reportsApiUrl
+    );
+  }
+
   getRiskLevel(score: number): string {
     if (score >= 75) {
       return 'High risk';

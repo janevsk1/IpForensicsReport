@@ -43,6 +43,21 @@ input {
   padding: 0.75rem 1rem;
 }
 
+.delete-all {
+  display: flex;
+  flex-direction: column;
+
+  &-button {
+    margin: 16px 0;
+    width: 100px;
+    padding: 0.75rem 1rem;
+    background-color: $danger-color;
+    &:hover {
+      background-color: color.scale($danger-color, $lightness: -10%);
+    }
+  }
+}
+
 .page-header {
   display: flex;
   justify-content: space-between;

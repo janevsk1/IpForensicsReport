@@ -186,5 +186,27 @@ namespace IpForensicsReport.Api.Repositories.Implementation
                     reader["CreatedOn"])
             };
         }
+
+        public async Task<int> DeleteByUserIdAsync(
+            long userId,
+            CancellationToken cancellationToken)
+        {
+            const string sql = """
+            DELETE FROM IpForensicsReports
+            WHERE UserId = @userId;
+            """;
+
+            await using var connection = _connectionFactory.CreateConnection();
+            await connection.OpenAsync(cancellationToken);
+
+            await using var command = new MySqlCommand(sql, connection);
+
+            command.Parameters.Add(
+                "@userId",
+                MySqlDbType.Int64
+            ).Value = userId;
+
+            return await command.ExecuteNonQueryAsync(cancellationToken);
+        }
     }
 }

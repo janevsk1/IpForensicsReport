@@ -95,5 +95,24 @@ namespace IpForensicsReport.Api.Controllers
                 Detail = "The access token does not contain a valid user ID."
             };
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAll(
+            CancellationToken cancellationToken)
+        {
+            if (!TryGetAuthenticatedUserId(out var userId))
+            {
+                return Unauthorized(new
+                {
+                    Message = "The access token does not contain a valid user ID."
+                });
+            }
+
+            await _reportService.DeleteAllByUserIdAsync(
+                userId,
+                cancellationToken);
+
+            return NoContent();
+        }
     }
 }

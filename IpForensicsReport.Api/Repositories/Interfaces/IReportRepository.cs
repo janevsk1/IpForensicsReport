@@ -9,5 +9,7 @@ namespace IpForensicsReport.Api.Repositories.Interfaces
         Task<IReadOnlyList<EncryptedReportRecord>> GetByUserIdAsync(long userId, CancellationToken cancellationToken);
 
         Task<EncryptedReportRecord?> GetByIdAsync(long reportId, long userId, CancellationToken cancellationToken);
+
+        Task<int> DeleteByUserIdAsync(long userId, CancellationToken cancellationToken);
     }
 }

@@ -55,6 +55,10 @@ export class ReportsComponent implements OnInit {
     ]
   });
 
+  readonly isDeletingReports = signal(false);
+  readonly deletionErrorMessage = signal('');
+  maxReportsToDisplay = 7;
+
   ngOnInit(): void {
     this.loadReports();
   }
@@ -133,6 +137,38 @@ export class ReportsComponent implements OnInit {
       });
   }
 
+  deleteAllReports(): void {
+    if (
+      this.reports().length === 0 ||
+      this.isDeletingReports() ||
+      this.isGeneratingReport()
+    ) {
+      return;
+    }
+
+    debugger;
+    this.isDeletingReports.set(true);
+    this.deletionErrorMessage.set('');
+
+    this.reportService
+      .deleteAllReports()
+      .pipe(
+        finalize(() => {
+          this.isDeletingReports.set(false);
+        })
+      )
+      .subscribe({
+        next: () => {
+          debugger;
+          this.reports.set([]);
+        },
+        error: (error: HttpErrorResponse) => {
+          debugger;
+          this.handleDeletionError(error);
+        }
+      });
+  }
+
   getRiskLevel(score: number): string {
     return this.reportService.getRiskLevel(score);
   }
@@ -187,6 +223,22 @@ export class ReportsComponent implements OnInit {
 
     this.generationErrorMessage.set(
       'The report could not be generated.'
+    );
+  }
+
+  private handleDeletionError(
+    error: HttpErrorResponse
+  ): void {
+    if (error.status === 401) {
+      this.deletionErrorMessage.set(
+        'Your session has expired. Please sign in again.'
+      );
+
+      return;
+    }
+
+    this.deletionErrorMessage.set(
+      'Saved reports could not be deleted.'
     );
   }
 }

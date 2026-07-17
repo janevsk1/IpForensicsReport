@@ -45,7 +45,7 @@
       <button
         type="submit"
         class="generate-report-button"
-        [disabled]="reportForm.invalid || isGeneratingReport()">
+        [disabled]="reportForm.invalid || isGeneratingReport() || this.reports().length >= maxReportsToDisplay">
         @if (isGeneratingReport()) {
           Generating...
         } @else {
@@ -64,12 +64,37 @@
   </section>
 
   <section class="saved-reports">
-    <div class="section-heading">
-      <h2>Saved reports</h2>
+    @if (reports().length > 0) {
+      <div class="section-heading">
+        <h2>Saved reports</h2>
 
-      <p>
-        Select a report to view its complete details.
-      </p>
+        <p>
+          Select a report to view its complete details.
+        </p>
+      </div>
+    }
+
+    <div class="delete-all">
+      @if (reports().length >= maxReportsToDisplay) {
+        <label>Max number of generated reports limited to {{ maxReportsToDisplay }}. Please delete all reports.</label>
+        <button
+          type="button"
+          class="delete-all-button"
+          [disabled]="isDeletingReports() || isGeneratingReport()"
+          (click)="deleteAllReports()">
+          @if (isDeletingReports()) {
+            Deleting...
+          } @else {
+            Delete all
+          }
+        </button>
+      }
+
+      @if (deletionErrorMessage()) {
+        <div class="error-message">
+          {{ deletionErrorMessage() }}
+        </div>
+      }
     </div>
 
     @if (isLoadingReports()) {
