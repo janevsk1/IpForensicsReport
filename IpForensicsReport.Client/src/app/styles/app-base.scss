@@ -1,0 +1,159 @@
+@use "./app-variables.scss" as *;
+@use "sass:color";
+
+body {
+  font-family: $app-font;
+  color: $text-color;
+}
+
+.app-page {
+  min-height: 100vh;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  background: $background-color;
+}
+
+.app-card {
+  //width: min(100%, 440px);
+  //width: 100%;
+  padding: 32px;
+  background: $white;
+  border: $card-border;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgb(0 0 0 / 8%);
+
+  &.login-card {
+    width: min(100%, 440px);
+  }
+
+  &.register-card {
+    width: min(100%, 540px);
+  }
+
+  &-header {
+    margin-bottom: 28px;
+
+    h1 {
+      margin: 6px 0 8px;
+    }
+
+    p {
+      margin: 0;
+      color: $label-color;
+
+      &.application-name {
+        color: $primary-color;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-family: $app-font-bold;
+      }
+    }
+  }
+}
+
+// Forms
+.app-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.app-form {
+  margin-bottom: 20px;
+
+  label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+  }
+
+  input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: $input-border;
+    border-radius: 7px;
+    box-sizing: border-box;
+  }
+
+  input:focus {
+    border-color: $primary-color;
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(36 87 214 / 15%);
+  }
+}
+
+// Buttons
+button {
+  font-family: $app-font;
+  font-size: 14px;
+  width: 100%;
+  min-height: 44px;
+  color: #ffffff;
+  font-weight: 700;
+  background: $primary-color;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.4;
+    background: color.adjust($primary-color, $lightness: -15%);
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    background: color.adjust($secondary-color, $lightness: -2%);
+    color: $text-color;
+  }
+}
+
+// Links
+.app-link {
+  margin-top: 28px;
+  text-align: center;
+  color: $label-color;
+
+  &.login-link {
+    margin: 24px 0 0;
+  }
+
+  a {
+    color: $primary-color;
+    font-weight: 600;
+
+    &:hover {
+      color: color.adjust($primary-color, $lightness: -10%);
+    }
+  }
+}
+
+// Validation messages
+.validation-message {
+  margin: 6px 0 0;
+  color: $danger-color-variant;
+  font-size: 13px;
+}
+
+.error-message {
+  margin-bottom: 20px;
+  padding: 12px;
+  color: $danger-color;
+  background: #ffebe9;
+  border: 1px solid #ffc5bf;
+  border-radius: 7px;
+}
+
+.alert {
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  border-radius: 7px;
+}
+
+.alert-error {
+  color: $danger-color;
+  background: #ffebe9;
+  border: 1px solid #ffc5bf;
+}

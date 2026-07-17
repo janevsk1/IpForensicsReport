@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -36,13 +36,13 @@ const passwordsMatchValidator: ValidatorFn = (
     ReactiveFormsModule,
     RouterLink
   ],
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  templateUrl: './register.component.html'
 })
 export class RegisterComponent {
   private readonly formBuilder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   readonly registerForm = this.formBuilder.nonNullable.group(
     {
@@ -126,6 +126,8 @@ export class RegisterComponent {
         },
         error: (error: HttpErrorResponse) => {
           this.errorMessage = this.getErrorMessage(error);
+          this.isSubmitting = false;
+          this.cdr.detectChanges();
         }
       });
   }

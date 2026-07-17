@@ -134,15 +134,7 @@ export class ReportsComponent implements OnInit {
   }
 
   getRiskLevel(score: number): string {
-    if (score >= 75) {
-      return 'High risk';
-    }
-
-    if (score >= 25) {
-      return 'Moderate risk';
-    }
-
-    return 'Low risk';
+    return this.reportService.getRiskLevel(score);
   }
 
   private handleReportsError(

@@ -16,7 +16,7 @@
     </button>
   </header>
 
-  <section class="generate-report-card">
+  <section class="app-card">
     <div class="section-heading">
       <h2>Generate report</h2>
 
@@ -28,7 +28,8 @@
 
     <form
       [formGroup]="reportForm"
-      (ngSubmit)="generateReport()">
+      (ngSubmit)="generateReport()"
+      class="app-form">
 
       <label for="ipAddress">
         IP address
@@ -43,6 +44,7 @@
 
       <button
         type="submit"
+        class="generate-report-button"
         [disabled]="reportForm.invalid || isGeneratingReport()">
         @if (isGeneratingReport()) {
           Generating...

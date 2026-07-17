@@ -1,14 +1,11 @@
-<main class="register-page">
-  <section
-    class="register-card"
-    aria-labelledby="register-title"
-  >
-    <header class="register-header">
+<main class="app-page">
+  <section class="app-card register-card">
+    <header class="app-card-header">
       <p class="application-name">
         IP Forensics Report
       </p>
 
-      <h1 id="register-title">
+      <h1>
         Create an account
       </h1>
 
@@ -31,8 +28,8 @@
       (ngSubmit)="submit()"
       novalidate
     >
-      <div class="name-row">
-        <div class="form-field">
+      <div class="app-form-row">
+        <div class="app-form">
           <label for="firstName">
             First name
           </label>
@@ -64,7 +61,7 @@
           }
         </div>
 
-        <div class="form-field">
+        <div class="app-form">
           <label for="lastName">
             Last name
           </label>
@@ -97,7 +94,7 @@
         </div>
       </div>
 
-      <div class="form-field">
+      <div class="app-form">
         <label for="email">
           Email address
         </label>
@@ -129,7 +126,7 @@
         }
       </div>
 
-      <div class="form-field">
+      <div class="app-form">
         <label for="password">
           Password
         </label>
@@ -170,7 +167,7 @@
         }
       </div>
 
-      <div class="form-field">
+      <div class="app-form">
         <label for="confirmPassword">
           Confirm password
         </label>
@@ -215,7 +212,7 @@
       </button>
     </form>
 
-    <p class="login-link">
+    <p class="app-link login-link">
       Already have an account?
 
       <a routerLink="/login">

@@ -35,4 +35,16 @@ export class ReportService {
       `${this.reportsApiUrl}/${reportId}`
     );
   }
+
+  getRiskLevel(score: number): string {
+    if (score >= 75) {
+      return 'High risk';
+    }
+
+    if (score >= 25) {
+      return 'Moderate risk';
+    }
+
+    return 'Low risk';
+  }
 }

@@ -1,56 +1,46 @@
-.generate-report-card {
+@use "../../../app/styles/app-variables.scss" as *;
+@use "sass:color";
+
+.app-card {
   margin-bottom: 2rem;
-  padding: 1.5rem;
-  border: 1px solid #e4e7ec;
-  border-radius: 0.75rem;
+  background: transparent;
+}
+
+.logout-button {
+  width: auto;
+  padding: 0.75rem 1rem;
+  background-color: $secondary-variant-color;
+
+  &:hover {
+    background-color: color.scale($secondary-variant-color, $lightness: -10%);
+  }
 }
 
 .section-heading {
   margin-bottom: 1.25rem;
+
+  h2 {
+    margin: 0 0 0.4rem;
+  }
+
+  p {
+    margin: 0;
+    color: $label-color;
+  }
 }
 
-.section-heading h2 {
-  margin: 0 0 0.4rem;
+input {
+  width: 360px;
+  margin-right: 16px;
+
+  &.ng-invalid.ng-touched {
+    border-color: $danger-color;
+  }
 }
 
-.section-heading p {
-  margin: 0;
-  color: #667085;
-}
-
-.generate-report-form {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-}
-
-.input-container {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.input-container label {
-  font-weight: 600;
-}
-
-.input-container input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0.75rem;
-  border: 1px solid #d0d5dd;
-  border-radius: 0.5rem;
-  font: inherit;
-}
-
-.input-container input:focus {
-  border-color: #667085;
-  outline: none;
-}
-
-.input-container input.ng-invalid.ng-touched {
-  border-color: #d92d20;
+.generate-report-button {
+  width: auto;
+  padding: 0.75rem 1rem;
 }
 
 .page-header {
@@ -59,31 +49,8 @@
   align-items: center;
 }
 
-.logout-button {
-  margin-bottom: 1.65rem;
-  margin-right: 1.65rem;
-  padding: 0.8rem 1.25rem;
-  border: 0;
-  border-radius: 0.5rem;
-  cursor: pointer;
-}
-
-.generate-button {
-  margin-top: 1.65rem;
-  padding: 0.8rem 1.25rem;
-  border: 0;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.generate-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
 .field-error {
-  color: #d92d20;
+  color: $danger-color;
   font-size: 0.875rem;
 }
 
@@ -91,15 +58,15 @@
   margin-top: 1rem;
   padding: 0.9rem;
   border-radius: 0.5rem;
-  background: #fef3f2;
-  color: #b42318;
+  background: $background-color;
+  color: $danger-color-variant;
 }
 
 .report-item {
   display: block;
   margin-bottom: 1rem;
   padding: 1.25rem;
-  border: 1px solid #e4e7ec;
+  border: $card-border;
   border-radius: 0.75rem;
   color: inherit;
   text-decoration: none;
@@ -115,13 +82,13 @@
   }
 
   &:focus-visible {
-    outline: 2px solid #667085;
+    outline: 2px solid $label-color;
     outline-offset: 2px;
   }
 
   p {
     margin: 0.65rem 0;
-    color: #667085;
+    color: $label-color;
   }
 }
 
@@ -144,7 +111,7 @@
 }
 
 .report-item-footer {
-  color: #667085;
+  color: $label-color;
   font-size: 0.9rem;
 }
 

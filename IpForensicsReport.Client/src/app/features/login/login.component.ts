@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
@@ -11,7 +11,6 @@ import {
 } from '@angular/router';
 import { finalize } from 'rxjs';
 import { AuthService } from '../../core/auth/services/auth.service';
-import { LoginRequest } from '../../core/auth/models/login-request.model';
 
 @Component({
   selector: 'app-login',
@@ -20,13 +19,13 @@ import { LoginRequest } from '../../core/auth/models/login-request.model';
     ReactiveFormsModule,
     RouterLink
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  templateUrl: './login.component.html'
 })
 export class LoginComponent {
   private readonly formBuilder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   isLoading = false;
   errorMessage = '';
@@ -80,8 +79,11 @@ export class LoginComponent {
           void this.router.navigate(['/reports']);
         },
         error: error => {
-          this.errorMessage =
+          debugger;
+          this.errorMessage = 
             this.getErrorMessage(error);
+          this.isSubmitting = false;
+          this.cdr.detectChanges();
         }
       });
   }
