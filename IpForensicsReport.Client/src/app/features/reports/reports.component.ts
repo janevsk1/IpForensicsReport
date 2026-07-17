@@ -146,7 +146,6 @@ export class ReportsComponent implements OnInit {
       return;
     }
 
-    debugger;
     this.isDeletingReports.set(true);
     this.deletionErrorMessage.set('');
 
@@ -159,11 +158,9 @@ export class ReportsComponent implements OnInit {
       )
       .subscribe({
         next: () => {
-          debugger;
           this.reports.set([]);
         },
         error: (error: HttpErrorResponse) => {
-          debugger;
           this.handleDeletionError(error);
         }
       });

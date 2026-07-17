@@ -79,7 +79,6 @@ export class LoginComponent {
           void this.router.navigate(['/reports']);
         },
         error: error => {
-          debugger;
           this.errorMessage = 
             this.getErrorMessage(error);
           this.isSubmitting = false;
