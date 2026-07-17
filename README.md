@@ -17,7 +17,7 @@ Install the following before running the solution:
 * .NET 10 SDK
 * MySQL Server 8 or later
 * Node.js compatible with Angular 22
-  Recommended: Node.js 22.22.3 or later
+  Recommended: Node.js versions are Node.js ^20.19.0 (LTS) or Node.js ^22.12.0 (LTS).
 * npm
 * An AbuseIPDB account and API key
 
